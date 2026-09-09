@@ -1,0 +1,281 @@
+/* --- BLACK & WHITE AESTHETIC COLOR PALETTE --- */
+:root {
+    --bg-grad-1: #000000;
+    --bg-grad-2: #0d0d0d;
+    --calc-bg: rgba(20, 20, 20, 0.65);
+    --calc-border: rgba(255, 255, 255, 0.18);
+    --calc-shadow: rgba(0, 0, 0, 0.85);
+    
+    --screen-bg: rgba(5, 5, 5, 0.85);
+    --screen-glow: rgba(255, 255, 255, 0.15);
+    --text-primary: #ffffff;
+    --text-secondary: #888888;
+
+    /* Monochrome Button Archetypes */
+    --btn-num-bg: rgba(255, 255, 255, 0.05);
+    --btn-num-border: rgba(255, 255, 255, 0.15);
+    --btn-num-glow: rgba(255, 255, 255, 0.3);
+
+    --btn-op-bg: rgba(255, 255, 255, 0.12);
+    --btn-op-border: rgba(255, 255, 255, 0.35);
+    --btn-op-glow: rgba(255, 255, 255, 0.5);
+    --btn-op-text: #ffffff;
+
+    --btn-fn-bg: rgba(255, 255, 255, 0.08);
+    --btn-fn-border: rgba(255, 255, 255, 0.25);
+    --btn-fn-glow: rgba(255, 255, 255, 0.4);
+    --btn-fn-text: #dddddd;
+
+    --btn-eq-bg: linear-gradient(135deg, #ffffff, #aaaaaa);
+    --btn-eq-glow: rgba(255, 255, 255, 0.8);
+    --btn-eq-text: #000000;
+}
+
+/* --- BASE RESET --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    user-select: none;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at 50% 30%, #1a1a1a, var(--bg-grad-1), var(--bg-grad-2));
+    overflow: hidden;
+    perspective: 1200px;
+}
+
+/* Ambient Animated Background Spheres */
+.ambient-sphere {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: 0;
+    animation: float 12s infinite alternate ease-in-out;
+    pointer-events: none;
+}
+.sphere-1 {
+    width: 380px;
+    height: 380px;
+    background: rgba(255, 255, 255, 0.1);
+    top: 10%;
+    left: 15%;
+}
+.sphere-2 {
+    width: 420px;
+    height: 420px;
+    background: rgba(255, 255, 255, 0.05);
+    bottom: 10%;
+    right: 15%;
+    animation-delay: -6s;
+}
+
+@keyframes float {
+    0% { transform: translateY(0) scale(1); }
+    100% { transform: translateY(-40px) scale(1.08); }
+}
+
+/* --- DRAGGABLE & 3D CALCULATOR CONTAINER --- */
+.calculator-wrapper {
+    position: absolute;
+    z-index: 1;
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease-out;
+    cursor: default;
+}
+
+.calculator {
+    width: 380px;
+    padding: 28px;
+    background: var(--calc-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid var(--calc-border);
+    border-radius: 32px;
+    box-shadow: 
+        0 30px 60px var(--calc-shadow),
+        inset 0 1px 1px rgba(255, 255, 255, 0.4),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.8);
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+/* Drag Handle Header Bar */
+.drag-header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 12px;
+    cursor: grab;
+}
+.drag-header:active {
+    cursor: grabbing;
+}
+.drag-handle {
+    width: 40px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    transition: background 0.2s;
+}
+.drag-header:hover .drag-handle {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+/* Particle Canvas Overlay */
+#particleCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    border-radius: 32px;
+    z-index: 10;
+}
+
+/* --- DISPLAY SCREEN --- */
+.screen-container {
+    background: var(--screen-bg);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 24px;
+    text-align: right;
+    box-shadow: 
+        inset 0 4px 12px rgba(0, 0, 0, 0.9),
+        0 0 20px var(--screen-glow);
+    transform: translateZ(25px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: grab;
+}
+.screen-container:active {
+    cursor: grabbing;
+}
+
+.screen-container.flash {
+    animation: screenFlash 0.3s ease-out;
+}
+
+@keyframes screenFlash {
+    0% { box-shadow: inset 0 4px 12px rgba(0,0,0,0.9), 0 0 40px rgba(255, 255, 255, 0.9); }
+    100% { box-shadow: inset 0 4px 12px rgba(0,0,0,0.9), 0 0 20px var(--screen-glow); }
+}
+
+.history-text {
+    min-height: 20px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.main-text {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+/* --- BUTTON GRID --- */
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    transform-style: preserve-3d;
+}
+
+/* --- 3D BUTTON STYLING --- */
+.btn {
+    position: relative;
+    height: 64px;
+    border: none;
+    outline: none;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    background: var(--btn-num-bg);
+    border-top: 1px solid var(--btn-num-border);
+    border-left: 1px solid var(--btn-num-border);
+    box-shadow: 
+        0 6px 0 rgba(0, 0, 0, 0.6),
+        0 10px 15px rgba(0, 0, 0, 0.5);
+    transform-style: preserve-3d;
+    transform: translateZ(15px);
+    transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.12s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateZ(22px) translateY(-2px);
+    box-shadow: 
+        0 8px 0 rgba(0, 0, 0, 0.6),
+        0 15px 20px var(--btn-num-glow);
+}
+
+.btn:active, .btn.active {
+    transform: translateZ(5px) translateY(4px) !important;
+    box-shadow: 
+        0 2px 0 rgba(0, 0, 0, 0.6),
+        0 4px 8px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Button Variants */
+.btn-operator {
+    background: var(--btn-op-bg);
+    border-color: var(--btn-op-border);
+    color: var(--btn-op-text);
+}
+.btn-operator:hover {
+    box-shadow: 0 8px 0 rgba(0, 0, 0, 0.6), 0 0 20px var(--btn-op-glow);
+}
+
+.btn-func {
+    background: var(--btn-fn-bg);
+    border-color: var(--btn-fn-border);
+    color: var(--btn-fn-text);
+}
+.btn-func:hover {
+    box-shadow: 0 8px 0 rgba(0, 0, 0, 0.6), 0 0 20px var(--btn-fn-glow);
+}
+
+.btn-equal {
+    background: var(--btn-eq-bg);
+    color: var(--btn-eq-text);
+    font-weight: 700;
+    border: none;
+    grid-column: span 2;
+}
+.btn-equal:hover {
+    box-shadow: 0 8px 0 rgba(0, 0, 0, 0.6), 0 0 25px var(--btn-eq-glow);
+}
+
+/* --- RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 420px) {
+    .calculator {
+        width: 320px;
+        padding: 20px;
+    }
+    .btn {
+        height: 54px;
+        font-size: 1.1rem;
+    }
+    .main-text {
+        font-size: 2rem;
+    }
+}

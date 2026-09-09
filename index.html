@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Monochrome Draggable Kinetic Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Ambient background spheres -->
+    <div class="ambient-sphere sphere-1"></div>
+    <div class="ambient-sphere sphere-2"></div>
+
+    <!-- 3D Calculator Container -->
+    <div class="calculator-wrapper" id="calcWrapper">
+        <div class="calculator" id="calculator">
+            <canvas id="particleCanvas"></canvas>
+            
+            <div class="drag-header" id="dragHeader">
+                <div class="drag-handle"></div>
+            </div>
+
+            <div class="screen-container" id="screen">
+                <div class="history-text" id="historyText"></div>
+                <div class="main-text" id="mainText">0</div>
+            </div>
+
+            <div class="keypad">
+                <button class="btn btn-func" data-action="clear">AC</button>
+                <button class="btn btn-func" data-action="delete">DEL</button>
+                <button class="btn btn-func" data-action="percent">%</button>
+                <button class="btn btn-operator" data-action="operator" data-op="/">÷</button>
+
+                <button class="btn" data-value="7">7</button>
+                <button class="btn" data-value="8">8</button>
+                <button class="btn" data-value="9">9</button>
+                <button class="btn btn-operator" data-action="operator" data-op="*">×</button>
+
+                <button class="btn" data-value="4">4</button>
+                <button class="btn" data-value="5">5</button>
+                <button class="btn" data-value="6">6</button>
+                <button class="btn btn-operator" data-action="operator" data-op="-">−</button>
+
+                <button class="btn" data-value="1">1</button>
+                <button class="btn" data-value="2">2</button>
+                <button class="btn" data-value="3">3</button>
+                <button class="btn btn-operator" data-action="operator" data-op="+">+</button>
+
+                <button class="btn" data-value="0">0</button>
+                <button class="btn" data-value=".">.</button>
+                <button class="btn btn-equal" data-action="calculate">=</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
